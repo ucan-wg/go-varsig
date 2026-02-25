@@ -2,6 +2,7 @@ package varsig
 
 import (
 	"encoding/binary"
+	"io"
 )
 
 // AlgorithmRSA is the value specifying an RSA signature.
@@ -53,7 +54,7 @@ func (v RSAVarsig) KeyLength() uint64 {
 	return v.keyLen
 }
 
-func decodeRSA(r BytesReader) (Varsig, error) {
+func decodeRSA(r io.ByteReader) (Varsig, error) {
 	hashAlg, err := DecodeHashAlgorithm(r)
 	if err != nil {
 		return nil, err

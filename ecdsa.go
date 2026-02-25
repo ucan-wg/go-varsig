@@ -3,6 +3,7 @@ package varsig
 import (
 	"encoding/binary"
 	"fmt"
+	"io"
 )
 
 // AlgorithmECDSA is the value specifying an ECDSA signature.
@@ -21,7 +22,7 @@ const (
 	CurveP521      = ECDSACurve(0x1202)
 )
 
-func decodeECDSACurve(r BytesReader) (ECDSACurve, error) {
+func decodeECDSACurve(r io.ByteReader) (ECDSACurve, error) {
 	u, err := binary.ReadUvarint(r)
 	if err != nil {
 		return 0, err
@@ -81,7 +82,7 @@ func (v ECDSAVarsig) Encode() []byte {
 	return buf
 }
 
-func decodeECDSA(r BytesReader) (Varsig, error) {
+func decodeECDSA(r io.ByteReader) (Varsig, error) {
 	curve, err := decodeECDSACurve(r)
 	if err != nil {
 		return nil, err

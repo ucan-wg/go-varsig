@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"io"
 )
 
 // Version represents which version of the varsig specification was used
@@ -18,7 +19,7 @@ const (
 
 // DecodeFunc is a function that parses the varsig representing a specific
 // signing algorithm.
-type DecodeFunc func(BytesReader) (Varsig, error)
+type DecodeFunc func(io.ByteReader) (Varsig, error)
 
 // Registry contains a mapping between known signing algorithms and
 // functions that can parse varsigs for that signing algorithm.
@@ -53,7 +54,7 @@ func (rs Registry) Decode(data []byte) (Varsig, error) {
 
 // DecodeStream converts data read from the provided io.Reader into one
 // of the registered Varsig types.
-func (rs Registry) DecodeStream(r BytesReader) (Varsig, error) {
+func (rs Registry) DecodeStream(r io.ByteReader) (Varsig, error) {
 	pre, err := binary.ReadUvarint(r)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrBadPrefix, err)
@@ -80,7 +81,7 @@ func (rs Registry) DecodeStream(r BytesReader) (Varsig, error) {
 	return decodeFunc(r)
 }
 
-func (rs Registry) decodeVersAndAlgo(r BytesReader) (Version, Algorithm, error) {
+func (rs Registry) decodeVersAndAlgo(r io.ByteReader) (Version, Algorithm, error) {
 	vers, err := binary.ReadUvarint(r)
 	if err != nil {
 		return Version(vers), 0, err
