@@ -3,6 +3,7 @@ package varsig
 import (
 	"encoding/binary"
 	"fmt"
+	"io"
 )
 
 // Prefix is the value for the varsig's varuint prefix byte.
@@ -49,7 +50,7 @@ const (
 
 // DecodeHashAlgorithm reads and validates the expected hash algorithm
 // (for varsig types include a variable hash algorithm.)
-func DecodeHashAlgorithm(r BytesReader) (Hash, error) {
+func DecodeHashAlgorithm(r io.ByteReader) (Hash, error) {
 	u, err := binary.ReadUvarint(r)
 	if err != nil {
 		return HashUnspecified, fmt.Errorf("%w: %w", ErrUnknownHash, err)
@@ -114,7 +115,7 @@ const (
 
 // DecodePayloadEncoding reads and validates the expected canonical payload
 // encoding of the data to be signed.
-func DecodePayloadEncoding(r BytesReader) (PayloadEncoding, error) {
+func DecodePayloadEncoding(r io.ByteReader) (PayloadEncoding, error) {
 	seg1, err := binary.ReadUvarint(r)
 	if err != nil {
 		return PayloadEncodingUnspecified, fmt.Errorf("%w: %w", ErrUnsupportedPayloadEncoding, err)

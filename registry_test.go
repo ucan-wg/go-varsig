@@ -3,6 +3,7 @@ package varsig_test
 import (
 	"bytes"
 	"encoding/hex"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -41,7 +42,7 @@ func testRegistry(t *testing.T) varsig.Registry {
 }
 
 func testDecodeFunc(algo varsig.Algorithm) varsig.DecodeFunc {
-	return func(r varsig.BytesReader) (varsig.Varsig, error) {
+	return func(r io.ByteReader) (varsig.Varsig, error) {
 		return &testVarsig{algo: algo}, nil
 	}
 }

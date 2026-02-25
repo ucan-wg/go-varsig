@@ -50,7 +50,7 @@ func Decode(data []byte) (Varsig, error) {
 
 // DecodeStream converts data read from the provided io.Reader into one
 // of the Varsig types provided by the DefaultRegistry.
-func DecodeStream(r BytesReader) (Varsig, error) {
+func DecodeStream(r io.ByteReader) (Varsig, error) {
 	return DefaultRegistry().DecodeStream(r)
 }
 
@@ -87,9 +87,4 @@ func (v varsig) encode() []byte {
 	buf = binary.AppendUvarint(buf, uint64(v.algo))
 
 	return buf
-}
-
-type BytesReader interface {
-	io.ByteReader
-	io.Reader
 }
