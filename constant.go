@@ -109,7 +109,7 @@ const (
 	encodingSegmentDAGPB    = uint64(0x70)
 	encodingSegmentDAGCBOR  = uint64(0x71)
 	encodingSegmentDAGJSON  = uint64(0x0129)
-	encodingSegmentEIP191   = uint64(0xe191)
+	encodingSegmentEIP191   = uint64(0xd191)
 	encodingSegmentJWT      = uint64(0x6a77)
 )
 
